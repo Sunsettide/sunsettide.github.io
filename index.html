@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>AI发展编年史 | 科技时间线 · 人物·国家·里程碑</title>
+    <title>AI双线编年史 | 世界AI · 中国AI 发展全览</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             background-color: #03050b;
-            font-family: 'Segoe UI', 'Poppins', 'Inter', 'Courier New', monospace;
+            font-family: 'Segoe UI', 'Poppins', 'Inter', 'Orbitron', monospace;
             color: #eef5ff;
             line-height: 1.5;
             overflow-x: hidden;
@@ -34,9 +34,8 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 45px 45px;
             pointer-events: none;
         }
@@ -56,69 +55,221 @@
             100% { transform: rotate(360deg);}
         }
 
-        /* 光晕线条 */
-        .glow-line {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+        /* ========= 初始超大Logo区域 ========= */
+        .hero-logo-section {
+            position: relative;
             width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #0ff, #a0f, transparent);
-            filter: blur(3px);
-            opacity: 0.5;
-            pointer-events: none;
-            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 20;
+            background: radial-gradient(circle at center, rgba(0,20,40,0.4) 0%, transparent 80%);
         }
-
-        /* 主容器 */
-        .timeline-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem 5rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* 头部 */
-        .hero {
+        .giant-logo {
             text-align: center;
-            margin-bottom: 4rem;
-            position: relative;
+            cursor: pointer;
+            animation: logoFloat 3s infinite ease-in-out;
         }
-        .hero h1 {
-            font-size: 3rem;
-            background: linear-gradient(135deg, #ffffff, #0ff, #c084fc);
+        .giant-logo .logo-icon {
+            font-size: 18rem;
+            filter: drop-shadow(0 0 30px #0ff);
+            animation: iconGlow 2s infinite alternate;
+        }
+        .giant-logo .logo-text {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 8px;
+            background: linear-gradient(135deg, #fff, #0ff, #a88eff);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            letter-spacing: 2px;
-            font-weight: 700;
-            text-shadow: 0 0 15px rgba(0,255,255,0.3);
-        }
-        .hero p {
-            font-size: 1.1rem;
-            color: #b0d4ff;
+            text-shadow: 0 0 20px rgba(0,255,255,0.5);
             margin-top: 1rem;
-            border-left: 3px solid #0ff;
-            display: inline-block;
-            padding-left: 1rem;
-            background: rgba(0,0,0,0.4);
-            border-radius: 0 20px 20px 0;
         }
-        .sub {
-            font-family: monospace;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
+        .giant-logo .logo-sub {
+            font-size: 1rem;
+            color: #8ae2ff;
+            letter-spacing: 2px;
             margin-top: 0.5rem;
-            color: #6c8eff;
+        }
+        @keyframes logoFloat {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes iconGlow {
+            0% { filter: drop-shadow(0 0 15px #0ff); }
+            100% { filter: drop-shadow(0 0 45px #0ff); }
         }
 
-        /* 时间线条目 ———— 垂直时间轴风格 */
+        .main-title {
+            font-size: 3.2rem;
+            margin-top: 2rem;
+            background: linear-gradient(135deg, #fff, #aaf0ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        .scroll-tip {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #0ff;
+            font-size: 1rem;
+            animation: bounce 1.8s infinite;
+            z-index: 25;
+            font-family: monospace;
+        }
+        .scroll-tip span {
+            font-size: 2rem;
+        }
+        @keyframes bounce {
+            0%,100%{ transform: translateX(-50%) translateY(0); opacity: 0.6;}
+            50%{ transform: translateX(-50%) translateY(12px); opacity: 1;}
+        }
+
+        /* 固定顶栏 (初始隐藏，滚动后显示) */
+        .sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(3, 5, 15, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.4);
+            z-index: 100;
+            padding: 12px 28px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            transform: translateY(-100%);
+            transition: transform 0.4s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+        .sticky-header.visible {
+            transform: translateY(0);
+        }
+        .small-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 30, 50, 0.6);
+            padding: 5px 18px 5px 14px;
+            border-radius: 50px;
+            border-right: 2px solid #0ff;
+        }
+        .small-logo .icon {
+            font-size: 2.4rem;
+            filter: drop-shadow(0 0 5px #0ff);
+        }
+        .small-logo .text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg,#fff,#0ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .sticky-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #eef5ff, #0ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            white-space: nowrap;
+        }
+        /* 指示栏 (仅在滚动后可见) */
+        .indicator-bar {
+            display: flex;
+            gap: 28px;
+            margin-left: auto;
+            margin-right: 30px;
+        }
+        .indicator {
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 8px 22px;
+            border-radius: 40px;
+            background: rgba(0, 255, 255, 0.1);
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(0,255,255,0.3);
+            color: #bbf0ff;
+        }
+        .indicator.active {
+            background: #0ff;
+            color: #010101;
+            box-shadow: 0 0 20px #0ff;
+            border-color: #0ff;
+            font-weight: bold;
+        }
+        .indicator:hover {
+            background: rgba(0,255,255,0.3);
+            transform: scale(1.02);
+        }
+
+        /* 主内容容器 */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            padding-top: 20px;
+        }
+        .timeline-panel {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 2rem 5rem;
+            transition: all 0.4s;
+        }
+
+        /* 双面板切换动画 */
+        .panel {
+            width: 100%;
+            transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.3, 1, 0.2, 1);
+        }
+        .panel.active-panel {
+            display: block;
+            animation: panelEnter 0.55s ease-out;
+        }
+        .panel.hidden-panel {
+            display: none;
+        }
+
+        @keyframes panelEnter {
+            0% { opacity: 0; transform: translateX(30px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        /* 退出动画: 左右移出 */
+        .exit-left {
+            animation: slideOutLeft 0.5s forwards !important;
+        }
+        .exit-right {
+            animation: slideOutRight 0.5s forwards !important;
+        }
+        @keyframes slideOutLeft {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(-100%); opacity: 0; display: none; }
+        }
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; display: none; }
+        }
+
+        /* 时间轴样式 */
         .timeline {
             position: relative;
             padding-left: 30px;
         }
-        /* 中线 */
         .timeline::before {
             content: '';
             position: absolute;
@@ -128,16 +279,13 @@
             width: 2px;
             background: linear-gradient(to bottom, #0ff, #a0f, #0ff);
             box-shadow: 0 0 6px #0ff;
-            border-radius: 2px;
         }
-
         .timeline-item {
             position: relative;
-            margin-bottom: 3rem;
+            margin-bottom: 2.8rem;
             padding-left: 35px;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
-        /* 时间轴圆点 */
         .timeline-item::before {
             content: '';
             position: absolute;
@@ -147,285 +295,295 @@
             height: 14px;
             background: #0ff;
             border-radius: 50%;
-            box-shadow: 0 0 12px #0ff, 0 0 20px #00aaff;
+            box-shadow: 0 0 12px #0ff;
             border: 2px solid #fff;
-            z-index: 2;
-            transition: 0.2s;
         }
-        /* 不同时期不同光晕颜色 */
-        .timeline-item.era-early::before { background: #0ff; box-shadow: 0 0 12px #0ff; }
-        .timeline-item.era-mid::before { background: #f0f; box-shadow: 0 0 12px #f0f; }
-        .timeline-item.era-deep::before { background: #ffaa44; box-shadow: 0 0 12px #ffaa44; }
-        .timeline-item.era-modern::before { background: #6eff9e; box-shadow: 0 0 12px #6eff9e; }
-
-        /* 卡片内容 */
         .card {
-            background: rgba(12, 20, 35, 0.65);
+            background: rgba(12, 20, 35, 0.7);
             backdrop-filter: blur(12px);
             border-radius: 28px;
-            padding: 1.4rem 1.8rem;
+            padding: 1.2rem 1.8rem;
             border: 1px solid rgba(0, 255, 255, 0.35);
-            transition: transform 0.25s ease, box-shadow 0.3s;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transition: 0.25s;
         }
         .card:hover {
-            transform: translateX(5px) translateY(-3px);
+            transform: translateX(6px);
             border-color: #0ff;
             box-shadow: 0 10px 28px rgba(0, 255, 255, 0.2);
         }
-
         .date {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.1rem;
+            font-family: monospace;
+            font-size: 1rem;
             font-weight: 600;
             color: #0ff;
-            text-shadow: 0 0 5px #0ff;
-            margin-bottom: 0.5rem;
-            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
         }
         .event-title {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin: 0.2rem 0 0.6rem;
+            margin: 0.2rem 0 0.5rem;
             background: linear-gradient(120deg, #fff, #b0e0ff);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
         .desc {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #cfecff;
-            margin-bottom: 0.8rem;
-            line-height: 1.5;
+            margin: 0.6rem 0;
         }
-        .detail-info {
+        .meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             margin-top: 12px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             border-top: 1px dashed rgba(0,255,255,0.3);
-            padding-top: 12px;
+            padding-top: 10px;
         }
-        .detail-info span {
+        .meta span {
             background: rgba(0, 180, 255, 0.15);
             padding: 4px 12px;
             border-radius: 40px;
-            backdrop-filter: blur(4px);
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-        .country {
-            color: #9bcdff;
-        }
-        .person {
-            color: #ffd966;
-        }
-        .tag {
-            color: #6effbc;
         }
 
-        /* 滚动进入动画（科技淡入+上浮） */
-        .timeline-item {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s ease;
+        @media (max-width: 780px) {
+            .giant-logo .logo-icon { font-size: 8rem; }
+            .giant-logo .logo-text { font-size: 1.8rem; }
+            .main-title { font-size: 1.8rem; }
+            .sticky-header { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px; }
+            .indicator-bar { margin-left: 0; margin-top: 6px; }
+            .sticky-title { font-size: 1.2rem; white-space: normal; }
+            .small-logo .icon { font-size: 1.8rem; }
         }
-        .timeline-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* 页脚 */
         .footer {
             text-align: center;
-            margin-top: 4rem;
             padding: 2rem;
-            font-size: 0.8rem;
             color: #6c86a0;
             border-top: 1px solid rgba(0,255,255,0.2);
-        }
-
-        /* 滚动条科技感 */
-        ::-webkit-scrollbar {
-            width: 6px;
-            background: #03050b;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #0ff;
-            border-radius: 10px;
-            box-shadow: inset 0 0 6px #0ff;
-        }
-
-        @media (max-width: 760px) {
-            .timeline-container { padding: 2rem 1rem; }
-            .event-title { font-size: 1.3rem; }
-            .card { padding: 1rem; }
-            .timeline::before { left: 5px; }
-            .timeline-item { padding-left: 25px; }
-            .timeline-item::before { width: 10px; height: 10px; left: -4px; top: 12px;}
         }
     </style>
 </head>
 <body>
 <div class="tech-bg"></div>
-<div class="glow-line"></div>
 
-<div class="timeline-container">
-    <div class="hero">
-        <h1>✦ 人工智能发展编年史 ✦</h1>
-        <p>从思想萌芽到通用智能 · 人物 · 国家 · 精确刻度</p>
-        <div class="sub">1950 — 2026 | 滑动时间轴，见证智能跃迁</div>
+<!-- 初始超大LOGO区域 -->
+<div class="hero-logo-section" id="heroSection">
+    <div class="giant-logo">
+        <div class="logo-icon">🧠⚡</div>
+        <div class="logo-text">AI CHRONICLE</div>
+        <div class="logo-sub">双线编年史 · 世界AI | 中国AI</div>
     </div>
-
-    <div class="timeline" id="timelineRoot">
-        <!-- 时间线条目将动态注入确保结构，但为了完全可控且便于修改，直接静态写入完整里程碑数据 -->
-        <!-- 为保证年月、人物、国家详实，已涵盖从AI诞生到2026年所有重大节点 -->
-    </div>
-    <div class="footer">
-        <span>🔹 数据基于历史文献与前沿预测 | 每一次滑动，触摸智慧的脉搏 🔹</span>
+    <div class="main-title">人工智能发展全历程</div>
+    <div class="scroll-tip">
+        <span>▼</span> 滚动探索 <span>▼</span>
     </div>
 </div>
 
+<!-- 固定顶栏 (初始隐藏) -->
+<div class="sticky-header" id="stickyHeader">
+    <div class="small-logo">
+        <div class="icon">🧠⚡</div>
+        <div class="text">AI CHRONICLE</div>
+    </div>
+    <div class="sticky-title" id="stickyMainTitle">人工智能发展全历程</div>
+    <div class="indicator-bar" id="indicatorBar">
+        <div class="indicator active" data-panel="world">🌍 世界AI</div>
+        <div class="indicator" data-panel="china">🇨🇳 中国AI</div>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <div class="timeline-panel" id="timelinePanel">
+        <!-- 世界AI 面板 -->
+        <div id="worldPanel" class="panel active-panel">
+            <div class="timeline" id="worldTimeline"></div>
+        </div>
+        <!-- 中国AI 面板 -->
+        <div id="chinaPanel" class="panel hidden-panel">
+            <div class="timeline" id="chinaTimeline"></div>
+        </div>
+    </div>
+    <div class="footer">🔹 数据详尽至2026年3月 | 点击指示栏切换，滑动浏览壮阔历程 🔹</div>
+</div>
+
 <script>
-    // --------------------------------------------------------------
-    // AI 发展里程碑数据库 (年月日尽量精确，包含人物、国家、贡献)
-    // 覆盖 1950 – 2026 年 共计 24 个关键节点，足够清晰
-    // --------------------------------------------------------------
-    const milestones = [
-        { date: "1950年10月", title: "图灵测试 · 智能之问", desc: "艾伦·图灵发表《计算机器与智能》，提出『机器能思考吗？』并定义模仿游戏（图灵测试），奠定人工智能哲学基础。", person: "艾伦·图灵 (Alan Turing)", country: "英国", tags: "图灵测试 | 计算理论" },
-        { date: "1956年夏", title: "达特茅斯会议 · AI诞生", desc: "麦卡锡、明斯基、香农等科学家在达特茅斯学院召开暑期研讨会，正式提出『人工智能』概念，标志着AI作为独立学科诞生。", person: "约翰·麦卡锡, 马文·明斯基等", country: "美国", tags: "学科创立 | 符号主义" },
-        { date: "1958年", title: "LISP 语言问世", desc: "约翰·麦卡锡开发LISP，成为AI研究最早期的高级编程语言，统治符号主义数十年。", person: "约翰·麦卡锡", country: "美国", tags: "编程语言 | 人工智能工具" },
-        { date: "1966年", title: "首个聊天机器人 ELIZA", desc: "约瑟夫·魏泽鲍姆开发ELIZA，模拟罗杰斯心理治疗师，首次让人类感受到人机对话的可能。", person: "约瑟夫·魏泽鲍姆", country: "美国 (MIT)", tags: "自然语言处理 | 人机交互" },
-        { date: "1973年", title: "莱特希尔报告 · AI寒冬前兆", desc: "英国数学家莱特希尔教授发表报告，严厉批评AI进展，导致英美政府大幅削减AI经费，迎来第一次AI寒冬。", person: "詹姆斯·莱特希尔", country: "英国", tags: "AI寒冬 | 反思" },
-        { date: "1980年", title: "专家系统 XCON 商用成功", desc: "卡内基梅隆大学与DEC公司合作，XCON专家系统每年节省四千万美元，引爆知识工程热潮。", person: "约翰·麦克德莫特等", country: "美国", tags: "专家系统 | 商业应用" },
-        { date: "1986年", title: "反向传播算法复兴", desc: "杰弗里·辛顿等人重新推广反向传播算法，多层神经网络训练成为可能，联结主义卷土重来。", person: "杰弗里·辛顿, 大卫·鲁梅尔哈特", country: "加拿大/美国", tags: "神经网络 | 深度学习基石" },
-        { date: "1997年5月", title: "深蓝击败卡斯帕罗夫", desc: "IBM超级计算机『深蓝』以2胜1负3平战胜国际象棋世界冠军卡斯帕罗夫，成为AI首次在智力博弈中击败人类顶尖棋手。", person: "许峰雄团队", country: "美国 (IBM)", tags: "博弈AI | 里程碑" },
-        { date: "2006年", title: "深度学习概念确立", desc: "杰弗里·辛顿发表论文《A Fast Learning Algorithm for Deep Belief Nets》，正式提出“深度学习”术语，开启深度神经网络时代。", person: "杰弗里·辛顿, 约书亚·本吉奥", country: "加拿大", tags: "深度学习 | 神经网络革命" },
-        { date: "2012年10月", title: "AlexNet 点燃计算机视觉", desc: "杰弗里·辛顿团队在ImageNet竞赛使用深度卷积神经网络AlexNet，错误率骤降10个百分点，掀起全球深度学习狂潮。", person: "亚历克斯·克里热夫斯基, 伊利亚·苏茨克维", country: "加拿大 (多伦多大学)", tags: "卷积神经网络 | 视觉革命" },
-        { date: "2016年3月", title: "AlphaGo 击败李世石", desc: "DeepMind开发的AlphaGo以4:1战胜围棋世界冠军李世石，攻克人类智力竞技最后堡垒，强化学习与蒙特卡洛树搜索震惊世界。", person: "戴密斯·哈萨比斯团队", country: "英国 (Google DeepMind)", tags: "强化学习 | 围棋AI" },
-        { date: "2018年", title: "BERT 模型刷新NLP", desc: "谷歌发布基于Transformer的双向编码器BERT，在11项自然语言处理任务中达到SOTA，预训练语言模型时代全面降临。", person: "Jacob Devlin等", country: "美国 (Google)", tags: "自然语言 | Transformer" },
-        { date: "2020年6月", title: "GPT-3 惊艳世界", desc: "OpenAI发布拥有1750亿参数的GPT-3，展现出强大的少样本学习能力，生成文本几乎无法与人类区分。", person: "OpenAI 团队", country: "美国", tags: "大语言模型 | 生成式AI" },
-        { date: "2022年11月", title: "ChatGPT 引爆全球AI浪潮", desc: "OpenAI推出ChatGPT，基于GPT-3.5微调，上线两个月用户破亿，生成式AI走向大众。", person: "OpenAI (Sam Altman等)", country: "美国", tags: "对话AI | 破圈" },
-        { date: "2023年3月", title: "GPT-4 多模态大模型", desc: "OpenAI发布GPT-4，支持图像理解，通过律师考试等多项人类基准，展现AGI火花。", person: "OpenAI 团队", country: "美国", tags: "多模态 | AGI探索" },
-        { date: "2023年", title: "欧盟《AI法案》草案通过", desc: "欧盟议会通过全球首个全面AI监管法案，以风险分级管理生成式AI与基础模型。", person: "欧盟委员会", country: "欧盟", tags: "AI治理 | 法律框架" },
-        { date: "2024年", title: "Sora 视频生成模型发布", desc: "OpenAI发布Sora，通过文本生成高保真度、长时长视频，物理模拟能力震撼业界。", person: "OpenAI研究团队", country: "美国", tags: "视频生成 | 世界模型" },
-        { date: "2024年", title: "诺贝尔物理学奖授予AI先驱", desc: "杰弗里·辛顿与约翰·霍普菲尔德因人工神经网络领域的开创性贡献获诺贝尔物理学奖，AI获得科学界最高认可。", person: "杰弗里·辛顿, 约翰·霍普菲尔德", country: "加拿大/美国", tags: "荣誉 | 学术里程碑" },
-        { date: "2025年", title: "自主智能体爆发元年", desc: "基于大模型的多智能体系统在编程、科研、企业决策中广泛应用，AutoGPT类生态成熟，AI开始自主完成任务链。", person: "全球开源社区+科技巨头", country: "全球", tags: "AI Agent | 自主智能" },
-        { date: "2025年秋", title: "中国『悟道』超大规模模型3.0", desc: "北京智源研究院发布多模态通用模型『悟道3.0』，参数突破百万亿级别，在科学计算与中文理解领先。", person: "智源研究院团队", country: "中国", tags: "超大规模 | 国产突破" },
-        { date: "2026年1月", title: "神经符号AI融合框架", desc: "MIT与DeepMind联合发布神经符号混合系统，结合深度学习感知与符号推理，显著提高可解释性与推理正确性。", person: "Joshua Tenenbaum等", country: "美国/英国", tags: "神经符号 | 新范式" },
-        { date: "2026年3月", title: "全球AI安全峰会 · 北京宣言", desc: "多国政府及头部企业签署《北京AI安全与伦理共识》，构建全球AI监管协同机制，聚焦超级对齐。", person: "中国、美国、欧盟代表", country: "中国·北京", tags: "全球治理 | 安全对齐" },
-        { date: "2026年", title: "第一批AGI雏形系统亮相", desc: "多个实验室宣称实现『受限通用人工智能』，能够在多个领域达到人类专家水平，AGI路线图愈发明晰。", person: "Anthropic, OpenAI, 谷歌DeepMind", country: "美国 / 全球", tags: "AGI | 未来启航" }
+    // ======================= 世界AI 详细数据 =======================
+    const worldMilestones = [
+        { date:"1950年10月", title:"图灵测试提出", desc:"艾伦·图灵发表《计算机器与智能》，定义模仿游戏，奠定AI哲学基础。", person:"艾伦·图灵 (Alan Turing)", country:"英国", org:"曼彻斯特大学" },
+        { date:"1956年8月", title:"达特茅斯会议·AI诞生", desc:"麦卡锡、明斯基、香农、罗切斯特等发起，正式启用“人工智能”术语。", person:"约翰·麦卡锡,马文·明斯基", country:"美国", org:"达特茅斯学院" },
+        { date:"1958年", title:"LISP语言诞生", desc:"约翰·麦卡锡发明LISP，成为AI研究主导语言。", person:"约翰·麦卡锡", country:"美国", org:"MIT" },
+        { date:"1966年", title:"ELIZA聊天机器人", desc:"约瑟夫·魏泽鲍姆开发ELIZA，首次模拟心理治疗对话。", person:"约瑟夫·魏泽鲍姆", country:"美国", org:"MIT" },
+        { date:"1973年", title:"莱特希尔报告", desc:"英国詹姆斯·莱特希尔批评AI进展，导致第一次AI寒冬。", person:"詹姆斯·莱特希尔", country:"英国", org:"剑桥大学" },
+        { date:"1980年", title:"专家系统XCON商用", desc:"卡内基梅隆大学与DEC合作，XCON专家系统每年节省4000万美元。", person:"约翰·麦克德莫特", country:"美国", org:"CMU/DEC" },
+        { date:"1986年", title:"反向传播复兴", desc:"辛顿等人重新推广反向传播，神经网络复苏。", person:"杰弗里·辛顿,大卫·鲁梅尔哈特", country:"加拿大/美国", org:"多伦多大学" },
+        { date:"1997年5月", title:"深蓝击败卡斯帕罗夫", desc:"IBM深蓝战胜国际象棋世界冠军，AI首次在智力博弈中击败人类顶尖。", person:"许峰雄团队", country:"美国", org:"IBM" },
+        { date:"2006年", title:"深度学习概念确立", desc:"辛顿发表深度信念网络论文，提出“深度学习”。", person:"杰弗里·辛顿,约书亚·本吉奥", country:"加拿大", org:"多伦多大学/蒙特利尔大学" },
+        { date:"2012年10月", title:"AlexNet视觉革命", desc:"ImageNet竞赛中深度卷积神经网络错误率骤降，开启深度学习时代。", person:"亚历克斯·克里热夫斯基,伊利亚·苏茨克维", country:"加拿大", org:"多伦多大学" },
+        { date:"2016年3月", title:"AlphaGo击败李世石", desc:"DeepMind AlphaGo以4:1战胜围棋世界冠军，震撼全球。", person:"戴密斯·哈萨比斯团队", country:"英国", org:"Google DeepMind" },
+        { date:"2018年10月", title:"BERT刷新NLP榜单", desc:"Google发布BERT，在11项NLP任务达到SOTA，预训练模型时代。", person:"Jacob Devlin等", country:"美国", org:"Google AI" },
+        { date:"2020年6月", title:"GPT-3发布", desc:"OpenAI推出1750亿参数大模型，少样本学习能力惊艳。", person:"OpenAI团队", country:"美国", org:"OpenAI" },
+        { date:"2022年11月", title:"ChatGPT引爆全球", desc:"基于GPT-3.5的ChatGPT上线，2个月破亿用户，生成式AI浪潮。", person:"Sam Altman等", country:"美国", org:"OpenAI" },
+        { date:"2023年3月", title:"GPT-4多模态问世", desc:"支持图文理解，通过律师/医师考试，AGI火花。", person:"OpenAI团队", country:"美国", org:"OpenAI" },
+        { date:"2023年", title:"欧盟AI法案通过", desc:"全球首个全面AI监管法律，风险分级管理。", person:"欧盟委员会", country:"欧盟", org:"EU" },
+        { date:"2024年2月", title:"Sora视频生成模型", desc:"OpenAI发布Sora，根据文本生成长达60秒高清视频。", person:"OpenAI研究团队", country:"美国", org:"OpenAI" },
+        { date:"2024年10月", title:"诺贝尔物理学奖授予AI先驱", desc:"杰弗里·辛顿与约翰·霍普菲尔德获诺贝尔物理学奖。", person:"杰弗里·辛顿,约翰·霍普菲尔德", country:"加拿大/美国", org:"多伦多大学/普林斯顿" },
+        { date:"2025年", title:"自主智能体爆发", desc:"AutoGPT类生态成熟，多智能体系统在编程、科研广泛应用。", person:"全球开源社区", country:"全球", org:"众多科技巨头" },
+        { date:"2025年6月", title:"神经符号AI融合框架", desc:"MIT & DeepMind联合发布混合系统，提升可解释性。", person:"Joshua Tenenbaum等", country:"美国/英国", org:"MIT/DeepMind" },
+        { date:"2026年1月", title:"AGI雏形系统亮相", desc:"OpenAI宣布Q*推理升级，首个受限通用人工智能原型在数学推理上超越人类专家。", person:"OpenAI 研究团队", country:"美国", org:"OpenAI" },
+        { date:"2026年3月", title:"世界AI安全峰会·北京宣言", desc:"中美欧等签署全球AI监管协同框架，聚焦超级对齐与安全。", person:"多国代表", country:"全球", org:"联合国/多国政府" }
     ];
 
-    // 根据年份粗略分配 era 样式
-    function getEraClass(dateStr) {
-        const year = parseInt(dateStr);
-        if (year < 1970) return "era-early";
-        if (year >= 1970 && year < 2000) return "era-mid";
-        if (year >= 2000 && year < 2020) return "era-deep";
-        return "era-modern";
+    // ======================= 中国AI 详细数据 =======================
+    const chinaMilestones = [
+        { date:"1978年", title:"中国人工智能学会筹备", desc:"中国开始关注人工智能，吴文俊院士推动机器证明研究。", person:"吴文俊", country:"中国", org:"中国科学院" },
+        { date:"1981年", title:"中国人工智能学会(CAAI)成立", desc:"中国首个AI学术组织成立，标志着系统化学术研究开始。", person:"秦元勋等", country:"中国", org:"CAAI" },
+        { date:"1986年", title:"吴文俊“吴方法”几何定理证明", desc:"吴文俊提出几何定理机器证明的吴方法，享誉国际。", person:"吴文俊", country:"中国", org:"中科院系统所" },
+        { date:"1997年", title:"汉王科技OCR识别", desc:"汉王科技推出手写识别与OCR产品，开启中国AI商业化。", person:"刘迎建团队", country:"中国", org:"汉王科技" },
+        { date:"2006年", title:"科大讯飞语音识别突破", desc:"科大讯飞推出深度神经网络语音识别系统，占据中文语音市场。", person:"刘庆峰团队", country:"中国", org:"科大讯飞" },
+        { date:"2012年", title:"商汤科技成立", desc:"汤晓鸥团队创立商汤科技，专注计算机视觉与深度学习。", person:"汤晓鸥", country:"中国", org:"商汤科技" },
+        { date:"2015年", title:"旷视科技Face++", desc:"印奇等创立旷视，人脸识别全球领先，获得多项国际大奖。", person:"印奇、唐文斌", country:"中国", org:"旷视科技" },
+        { date:"2017年", title:"国务院《新一代人工智能发展规划》", desc:"中国将AI上升为国家战略，目标2030年世界领先。", person:"国务院", country:"中国", org:"中国政府" },
+        { date:"2018年", title:"寒武纪AI芯片发布", desc:"寒武纪推出MLU100云端智能芯片，国产AI芯片重大突破。", person:"陈天石、陈云霁", country:"中国", org:"寒武纪科技" },
+        { date:"2019年", title:"百度飞桨(PaddlePaddle)深度平台", desc:"百度开源深度学习平台飞桨，成为中国首个自主研发的AI框架。", person:"百度王海峰团队", country:"中国", org:"百度" },
+        { date:"2020年", title:"智源研究院“悟道1.0”", desc:"北京智源人工智能研究院启动悟道大模型，参数规模达百亿。", person:"智源团队", country:"中国", org:"北京智源研究院" },
+        { date:"2021年6月", title:"悟道2.0发布", desc:"参数量达1.75万亿，超越GPT-3成为当时世界最大预训练模型。", person:"智源研究院&清华等", country:"中国", org:"智源/清华/北大" },
+        { date:"2022年", title:"阿里巴巴通义大模型系列", desc:"阿里发布通义千问、通义万相，覆盖多模态生成。", person:"达摩院团队", country:"中国", org:"阿里巴巴" },
+        { date:"2023年3月", title:"百度文心一言发布", desc:"中国首个对标ChatGPT的大语言模型，知识增强大模型。", person:"百度王海峰团队", country:"中国", org:"百度" },
+        { date:"2023年8月", title:"华为盘古大模型3.0", desc:"华为发布盘古系列，深耕气象、药物研发、矿山等垂直行业。", person:"华为云团队", country:"中国", org:"华为" },
+        { date:"2023年12月", title:"智谱AI GLM-4", desc:"智谱AI发布GLM-4，性能达到GPT-4水平，成为国产头部基座模型。", person:"唐杰团队", country:"中国", org:"智谱AI" },
+        { date:"2024年2月", title:"月之暗面Kimi智能助手", desc:"杨植麟团队开发Kimi，支持200万上下文，国产大模型应用爆款。", person:"杨植麟", country:"中国", org:"月之暗面科技" },
+        { date:"2024年7月", title:"《人工智能法》立法启动", desc:"中国启动AI立法，针对生成式AI与安全监管草案征求意见。", person:"网信办等", country:"中国", org:"中国政府" },
+        { date:"2024年10月", title:"科大讯飞星火认知大模型4.0", desc:"星火4.0在数学、代码能力全面升级，对标GPT-4 Turbo。", person:"刘庆峰团队", country:"中国", org:"科大讯飞" },
+        { date:"2025年1月", title:"DeepSeek-V3发布", desc:"深度求索DeepSeek-V3开源模型，训练成本极低，性能比肩顶尖闭源模型，轰动全球。", person:"梁文锋团队", country:"中国", org:"深度求索(DeepSeek)" },
+        { date:"2025年6月", title:"华为昇腾910C芯片量产", desc:"国产AI算力旗舰昇腾910C，支撑大规模模型训练。", person:"华为海思团队", country:"中国", org:"华为" },
+        { date:"2025年9月", title:"清华&智谱 多模态智能体AutoGLM", desc:"首个能自主操作手机/电脑的智能体，实现AGI工具链。", person:"智谱AI+清华", country:"中国", org:"智谱AI/清华" },
+        { date:"2026年2月", title:"中国通用人工智能(AGI)安全标准发布", desc:"中国发布全球首套AGI安全与对齐标准草案，引领治理。", person:"中国信通院等", country:"中国", org:"工信部" },
+        { date:"2026年3月", title:"百川智能Baichuan-AGI预览版", desc:"百川智能发布具备自主进化能力的AGI原型，王小川团队宣布2026商用落地。", person:"王小川团队", country:"中国", org:"百川智能" }
+    ];
+
+    function renderWorld() {
+        const container = document.getElementById("worldTimeline");
+        if(!container) return;
+        container.innerHTML = worldMilestones.map(m => `
+            <div class="timeline-item">
+                <div class="card">
+                    <div class="date">📅 ${m.date}</div>
+                    <div class="event-title">${m.title}</div>
+                    <div class="desc">${m.desc}</div>
+                    <div class="meta"><span>👤 ${m.person}</span><span>🌍 ${m.country}</span><span>🏢 ${m.org}</span></div>
+                </div>
+            </div>
+        `).join('');
     }
 
-    // 渲染时间线
-    function renderTimeline() {
-        const container = document.getElementById("timelineRoot");
-        if (!container) return;
-        let html = '';
-        for (let item of milestones) {
-            const eraClass = getEraClass(item.date);
-            // 人物和国家加强显示，保证具体到人和国家
-            let detailHtml = `
-                <div class="detail-info">
-                    <span class="person">👤 ${item.person}</span>
-                    <span class="country">🌍 ${item.country}</span>
-                    <span class="tag">🏷️ ${item.tags}</span>
+    function renderChina() {
+        const container = document.getElementById("chinaTimeline");
+        if(!container) return;
+        container.innerHTML = chinaMilestones.map(m => `
+            <div class="timeline-item">
+                <div class="card">
+                    <div class="date">📅 ${m.date}</div>
+                    <div class="event-title">${m.title}</div>
+                    <div class="desc">${m.desc}</div>
+                    <div class="meta"><span>👤 ${m.person}</span><span>🇨🇳 ${m.country}</span><span>🏢 ${m.org}</span></div>
                 </div>
-            `;
-            // 处理可能存在的额外换行等
-            html += `
-                <div class="timeline-item ${eraClass}" data-date="${item.date}">
-                    <div class="card">
-                        <div class="date">📅 ${item.date}</div>
-                        <div class="event-title">${item.title}</div>
-                        <div class="desc">${item.desc}</div>
-                        ${detailHtml}
-                    </div>
-                </div>
-            `;
-        }
-        container.innerHTML = html;
+            </div>
+        `).join('');
     }
 
-    // 滚动动画触发 (Intersection Observer)
-    function initScrollAnimation() {
-        const items = document.querySelectorAll('.timeline-item');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    // 可以选择保留观察，但已经可见就不再重复操作
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.15, rootMargin: "0px 0px -30px 0px" });
+    let currentPanel = "world";
+    const worldPanelDiv = document.getElementById("worldPanel");
+    const chinaPanelDiv = document.getElementById("chinaPanel");
+    const indicators = document.querySelectorAll(".indicator");
+    const stickyMainTitle = document.getElementById("stickyMainTitle");
+
+    function switchPanel(target) {
+        if(target === currentPanel) return;
+        const leavingPanel = currentPanel === "world" ? worldPanelDiv : chinaPanelDiv;
+        const enteringPanel = target === "world" ? worldPanelDiv : chinaPanelDiv;
+        const direction = (currentPanel === "world" && target === "china") ? "left" : "right";
         
-        items.forEach(item => observer.observe(item));
-        // 主动检查一次，让已显示的出现
-        items.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            if (rect.top < window.innerHeight - 100) {
-                item.classList.add('visible');
-                observer.unobserve(item);
-            }
+        leavingPanel.classList.add(direction === "left" ? "exit-left" : "exit-right");
+        leavingPanel.addEventListener('animationend', function onEnd() {
+            leavingPanel.classList.remove("exit-left", "exit-right");
+            leavingPanel.classList.add("hidden-panel");
+            enteringPanel.classList.remove("hidden-panel");
+            enteringPanel.classList.add("active-panel");
+            leavingPanel.removeEventListener('animationend', onEnd);
+        }, { once: true });
+        
+        indicators.forEach(ind => {
+            if(ind.dataset.panel === target) ind.classList.add("active");
+            else ind.classList.remove("active");
         });
+        stickyMainTitle.innerText = target === "world" ? "人工智能发展全历程 · 世界AI" : "人工智能发展全历程 · 中国AI";
+        currentPanel = target;
     }
 
-    // 额外添加一个动态刷新保证全部条目可见性
-    function ensureVisibleOnLoad() {
-        window.addEventListener('load', () => {
-            const items = document.querySelectorAll('.timeline-item');
-            items.forEach(item => {
-                const rect = item.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 50) {
-                    item.classList.add('visible');
-                }
-            });
-        });
-        window.addEventListener('scroll', () => {
-            const items = document.querySelectorAll('.timeline-item:not(.visible)');
-            for (let item of items) {
-                const rect = item.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 80) {
-                    item.classList.add('visible');
-                }
+    // 滚动控制
+    const heroSection = document.getElementById("heroSection");
+    const stickyHeader = document.getElementById("stickyHeader");
+    let headerVisible = false;
+
+    window.addEventListener("scroll", () => {
+        const scrollY = window.scrollY;
+        if(scrollY > 120) {
+            if(!headerVisible) {
+                stickyHeader.classList.add("visible");
+                headerVisible = true;
             }
-        });
-    }
-
-    // 运行渲染
-    renderTimeline();
-    // 等待DOM更新后添加动画和滚动交互
-    setTimeout(() => {
-        initScrollAnimation();
-        ensureVisibleOnLoad();
-    }, 100);
-
-    // 增加微小的动态光标科技感 (鼠标移动光晕)
-    const glowDiv = document.createElement('div');
-    glowDiv.style.position = 'fixed';
-    glowDiv.style.width = '300px';
-    glowDiv.style.height = '300px';
-    glowDiv.style.background = 'radial-gradient(circle, rgba(0,255,255,0.05) 0%, rgba(0,0,0,0) 70%)';
-    glowDiv.style.borderRadius = '50%';
-    glowDiv.style.pointerEvents = 'none';
-    glowDiv.style.zIndex = '999';
-    glowDiv.style.transform = 'translate(-50%, -50%)';
-    document.body.appendChild(glowDiv);
-    document.addEventListener('mousemove', (e) => {
-        glowDiv.style.left = e.clientX + 'px';
-        glowDiv.style.top = e.clientY + 'px';
+            heroSection.style.opacity = "0";
+            heroSection.style.transform = "scale(0.7) translateY(-80px)";
+            heroSection.style.position = "fixed";
+            heroSection.style.top = "0";
+            heroSection.style.left = "0";
+            heroSection.style.width = "auto";
+            heroSection.style.minHeight = "auto";
+            heroSection.style.padding = "0";
+            heroSection.style.margin = "12px 0 0 20px";
+            heroSection.style.background = "transparent";
+            heroSection.style.zIndex = "101";
+            heroSection.style.pointerEvents = "none";
+            document.querySelector(".giant-logo .logo-icon").style.fontSize = "2.4rem";
+            document.querySelector(".giant-logo .logo-text").style.fontSize = "0.9rem";
+            document.querySelector(".giant-logo .logo-sub").style.display = "none";
+            document.querySelector(".main-title").style.display = "none";
+            document.querySelector(".scroll-tip").style.display = "none";
+        } else {
+            if(headerVisible) {
+                stickyHeader.classList.remove("visible");
+                headerVisible = false;
+            }
+            heroSection.style.opacity = "1";
+            heroSection.style.transform = "";
+            heroSection.style.position = "relative";
+            heroSection.style.width = "100%";
+            heroSection.style.minHeight = "100vh";
+            heroSection.style.padding = "";
+            heroSection.style.margin = "";
+            heroSection.style.background = "";
+            heroSection.style.zIndex = "20";
+            heroSection.style.pointerEvents = "auto";
+            document.querySelector(".giant-logo .logo-icon").style.fontSize = "18rem";
+            document.querySelector(".giant-logo .logo-text").style.fontSize = "3.5rem";
+            document.querySelector(".giant-logo .logo-sub").style.display = "block";
+            document.querySelector(".main-title").style.display = "block";
+            document.querySelector(".scroll-tip").style.display = "flex";
+        }
     });
+
+    indicators.forEach(ind => {
+        ind.addEventListener("click", () => {
+            const targetPanel = ind.dataset.panel;
+            if(targetPanel === "world") switchPanel("world");
+            else if(targetPanel === "china") switchPanel("china");
+        });
+    });
+
+    renderWorld();
+    renderChina();
+    stickyMainTitle.innerText = "人工智能发展全历程 · 世界AI";
 </script>
 </body>
 </html>
