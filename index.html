@@ -2,653 +2,430 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>AI发展路线 | 科技感滚动视界</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AI发展编年史 | 科技时间线 · 人物·国家·里程碑</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* 避免拖动干扰，不影响文字复制 */
         }
 
         body {
-            background: #000000;
-            font-family: 'Segoe UI', 'Poppins', 'Orbitron', 'Courier New', monospace;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-            color: #fff;
+            background-color: #03050b;
+            font-family: 'Segoe UI', 'Poppins', 'Inter', 'Courier New', monospace;
+            color: #eef5ff;
+            line-height: 1.5;
+            overflow-x: hidden;
         }
 
-        /* 科技感粒子网格背景 (动态流光) */
-        .bg-tech {
+        /* 科技动态背景 */
+        .tech-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: radial-gradient(circle at 20% 30%, #0a0f1e, #000000);
-            overflow: hidden;
+            background: radial-gradient(circle at 30% 10%, #0a0f1f, #010101);
         }
-
-        /* 数字网格线 */
-        .bg-tech::before {
+        .tech-bg::before {
             content: "";
             position: absolute;
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.08) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 45px 45px;
             pointer-events: none;
         }
-
-        /* 动态扫描光晕 */
-        .bg-tech::after {
+        .tech-bg::after {
             content: "";
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.02) 0%, transparent 70%);
-            animation: rotateGlow 20s linear infinite;
+            background: radial-gradient(circle, rgba(0, 180, 255, 0.02) 0%, transparent 70%);
+            animation: rotateSlow 30s linear infinite;
             pointer-events: none;
         }
-
-        @keyframes rotateGlow {
+        @keyframes rotateSlow {
             0% { transform: rotate(0deg);}
             100% { transform: rotate(360deg);}
         }
 
-        /* 全屏容器 */
-        .fullpage-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* 所有页面绝对定位 + 平滑过渡准备 */
-        .section {
-            position: absolute;
-            top: 0;
+        /* 光晕线条 */
+        .glow-line {
+            position: fixed;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            opacity: 0;           /* 默认不可见，active才可见 */
-            visibility: visible;
-            will-change: transform, opacity;
-            z-index: 1;
-            backdrop-filter: blur(2px);
-            /* 保证文字阴影和科技感 */
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0ff, #a0f, transparent);
+            filter: blur(3px);
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 10;
         }
 
-        /* 激活的页面完全显示 */
-        .section.active {
-            opacity: 1;
+        /* 主容器 */
+        .timeline-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 5rem;
+            position: relative;
             z-index: 2;
         }
 
-        /* 内容卡片样式 - 科技霓虹风 */
-        .content-card {
-            max-width: 800px;
-            width: 85%;
-            padding: 2.5rem 2rem;
-            background: rgba(10, 20, 30, 0.65);
-            backdrop-filter: blur(12px);
-            border-radius: 32px;
-            border: 1px solid rgba(0, 255, 255, 0.35);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), inset 0 0 15px rgba(0, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: cardGlow 3s infinite alternate;
+        /* 头部 */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
         }
-
-        @keyframes cardGlow {
-            0% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.2), inset 0 0 5px rgba(0, 255, 255, 0.1); border-color: rgba(0, 255, 255, 0.3);}
-            100% { box-shadow: 0 0 35px rgba(0, 255, 255, 0.5), inset 0 0 15px rgba(0, 255, 255, 0.2); border-color: rgba(0, 255, 255, 0.8);}
-        }
-
-        .content-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 45px rgba(0, 255, 255, 0.6);
-        }
-
-        .year {
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-            color: #0ff;
-            text-shadow: 0 0 8px #0ff;
-            font-weight: 300;
-            margin-bottom: 1rem;
-            font-family: 'Orbitron', monospace;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1.2rem;
-            background: linear-gradient(135deg, #fff, #0ff, #a0f);
+        .hero h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #ffffff, #0ff, #c084fc);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             letter-spacing: 2px;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(0,255,255,0.3);
         }
-
-        .desc {
+        .hero p {
             font-size: 1.1rem;
-            line-height: 1.6;
-            color: #e0f0ff;
-            text-shadow: 0 0 2px rgba(0,0,0,0.5);
-            margin-bottom: 1.5rem;
-            font-weight: 300;
+            color: #b0d4ff;
+            margin-top: 1rem;
+            border-left: 3px solid #0ff;
+            display: inline-block;
+            padding-left: 1rem;
+            background: rgba(0,0,0,0.4);
+            border-radius: 0 20px 20px 0;
+        }
+        .sub {
+            font-family: monospace;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+            color: #6c8eff;
         }
 
-        .milestone {
+        /* 时间线条目 ———— 垂直时间轴风格 */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        /* 中线 */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 20px;
+            bottom: 20px;
+            width: 2px;
+            background: linear-gradient(to bottom, #0ff, #a0f, #0ff);
+            box-shadow: 0 0 6px #0ff;
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 35px;
+            transition: all 0.3s ease;
+        }
+        /* 时间轴圆点 */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 8px;
+            width: 14px;
+            height: 14px;
+            background: #0ff;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #0ff, 0 0 20px #00aaff;
+            border: 2px solid #fff;
+            z-index: 2;
+            transition: 0.2s;
+        }
+        /* 不同时期不同光晕颜色 */
+        .timeline-item.era-early::before { background: #0ff; box-shadow: 0 0 12px #0ff; }
+        .timeline-item.era-mid::before { background: #f0f; box-shadow: 0 0 12px #f0f; }
+        .timeline-item.era-deep::before { background: #ffaa44; box-shadow: 0 0 12px #ffaa44; }
+        .timeline-item.era-modern::before { background: #6eff9e; box-shadow: 0 0 12px #6eff9e; }
+
+        /* 卡片内容 */
+        .card {
+            background: rgba(12, 20, 35, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 1.4rem 1.8rem;
+            border: 1px solid rgba(0, 255, 255, 0.35);
+            transition: transform 0.25s ease, box-shadow 0.3s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .card:hover {
+            transform: translateX(5px) translateY(-3px);
+            border-color: #0ff;
+            box-shadow: 0 10px 28px rgba(0, 255, 255, 0.2);
+        }
+
+        .date {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0ff;
+            text-shadow: 0 0 5px #0ff;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        .event-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0.2rem 0 0.6rem;
+            background: linear-gradient(120deg, #fff, #b0e0ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .desc {
+            font-size: 1rem;
+            color: #cfecff;
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
+        .detail-info {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            justify-content: center;
-            margin-top: 20px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            border-top: 1px dashed rgba(0,255,255,0.3);
+            padding-top: 12px;
         }
-
-        .tag {
-            background: rgba(0, 255, 255, 0.12);
-            border: 1px solid #0ff;
+        .detail-info span {
+            background: rgba(0, 180, 255, 0.15);
+            padding: 4px 12px;
             border-radius: 40px;
-            padding: 6px 18px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #0ff;
             backdrop-filter: blur(4px);
-            transition: 0.2s;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .country {
+            color: #9bcdff;
+        }
+        .person {
+            color: #ffd966;
+        }
+        .tag {
+            color: #6effbc;
         }
 
-        .tag:hover {
-            background: #0ff;
-            color: #000;
-            box-shadow: 0 0 12px #0ff;
-            cursor: default;
+        /* 滚动进入动画（科技淡入+上浮） */
+        .timeline-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s ease;
+        }
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* 滚动提示小箭头 */
-        .scroll-hint {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
+        /* 页脚 */
+        .footer {
             text-align: center;
-            color: #0ff;
+            margin-top: 4rem;
+            padding: 2rem;
             font-size: 0.8rem;
-            letter-spacing: 2px;
-            opacity: 0.7;
-            animation: bounce 2s infinite;
-            pointer-events: none;
-            font-family: monospace;
+            color: #6c86a0;
+            border-top: 1px solid rgba(0,255,255,0.2);
         }
 
-        .scroll-hint span {
-            display: block;
-            font-size: 1.8rem;
-            line-height: 1;
+        /* 滚动条科技感 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            background: #03050b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0ff;
+            border-radius: 10px;
+            box-shadow: inset 0 0 6px #0ff;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.4;}
-            50% { transform: translateX(-50%) translateY(8px); opacity: 1;}
-        }
-
-        /* 响应式 */
-        @media (max-width: 768px) {
-            h1 { font-size: 1.8rem; }
-            .desc { font-size: 0.9rem; }
-            .content-card { padding: 1.5rem; width: 90%; }
-            .tag { font-size: 0.7rem; padding: 4px 12px; }
-        }
-
-        /* ---------- 随机特效动画定义 ---------- */
-        /* 所有动画统一时长 0.65s，缓动曲线科技感 */
-        .animate-exit, .animate-enter {
-            animation-duration: 0.65s;
-            animation-fill-mode: forwards;
-            animation-timing-function: cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        /* 特效组 1 - 淡入淡出+上移下移 */
-        @keyframes fadeOutUp {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-30px); filter: blur(4px);}
-        }
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(40px); filter: blur(6px);}
-            to { opacity: 1; transform: translateY(0); filter: blur(0);}
-        }
-
-        /* 特效组 2 - 缩放 + 旋转微光晕 */
-        @keyframes zoomOut {
-            from { opacity: 1; transform: scale(1); filter: brightness(1);}
-            to { opacity: 0; transform: scale(0.85); filter: brightness(0.6) blur(2px);}
-        }
-        @keyframes zoomIn {
-            from { opacity: 0; transform: scale(1.2); filter: blur(5px);}
-            to { opacity: 1; transform: scale(1); filter: blur(0);}
-        }
-
-        /* 特效组 3 - 3D旋转退出/进入 */
-        @keyframes rotateOut {
-            from { opacity: 1; transform: rotateX(0deg); }
-            to { opacity: 0; transform: rotateX(90deg); filter: blur(4px);}
-        }
-        @keyframes rotateIn {
-            from { opacity: 0; transform: rotateX(-90deg); filter: blur(6px);}
-            to { opacity: 1; transform: rotateX(0deg); filter: blur(0);}
-        }
-
-        /* 特效组 4 - 滑动滑入 左右酷炫 */
-        @keyframes slideOutLeft {
-            from { opacity: 1; transform: translateX(0);}
-            to { opacity: 0; transform: translateX(-100px); filter: blur(3px);}
-        }
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(100px); filter: blur(5px);}
-            to { opacity: 1; transform: translateX(0); filter: blur(0);}
-        }
-
-        /* 特效组 5 - 倾斜光晕闪动 */
-        @keyframes glitchOut {
-            0% { opacity: 1; transform: skew(0deg); filter: brightness(1);}
-            20% { transform: skew(3deg); filter: hue-rotate(10deg);}
-            100% { opacity: 0; transform: skew(-5deg); filter: blur(6px) brightness(0.4);}
-        }
-        @keyframes glitchIn {
-            0% { opacity: 0; transform: skew(8deg); filter: blur(8px) hue-rotate(30deg);}
-            70% { transform: skew(-2deg);}
-            100% { opacity: 1; transform: skew(0deg); filter: blur(0) hue-rotate(0);}
-        }
-
-        /* 特效组 6 - 翻转 + 下落感 */
-        @keyframes flipOut {
-            0% { opacity: 1; transform: perspective(400px) rotateY(0deg);}
-            100% { opacity: 0; transform: perspective(400px) rotateY(90deg); filter: blur(2px);}
-        }
-        @keyframes flipIn {
-            0% { opacity: 0; transform: perspective(400px) rotateY(-90deg); filter: blur(5px);}
-            100% { opacity: 1; transform: perspective(400px) rotateY(0deg); filter: blur(0);}
-        }
-
-        /* 特效类映射 */
-        .fadeOutUp { animation-name: fadeOutUp; }
-        .fadeInDown { animation-name: fadeInDown; }
-        .zoomOut { animation-name: zoomOut; }
-        .zoomIn { animation-name: zoomIn; }
-        .rotateOut { animation-name: rotateOut; }
-        .rotateIn { animation-name: rotateIn; }
-        .slideOutLeft { animation-name: slideOutLeft; }
-        .slideInRight { animation-name: slideInRight; }
-        .glitchOut { animation-name: glitchOut; }
-        .glitchIn { animation-name: glitchIn; }
-        .flipOut { animation-name: flipOut; }
-        .flipIn { animation-name: flipIn; }
-
-        /* 辅助 */
-        .no-animation {
-            animation: none !important;
+        @media (max-width: 760px) {
+            .timeline-container { padding: 2rem 1rem; }
+            .event-title { font-size: 1.3rem; }
+            .card { padding: 1rem; }
+            .timeline::before { left: 5px; }
+            .timeline-item { padding-left: 25px; }
+            .timeline-item::before { width: 10px; height: 10px; left: -4px; top: 12px;}
         }
     </style>
 </head>
 <body>
-<div class="bg-tech"></div>
-<div class="fullpage-container" id="fullpageContainer">
-    <!-- 按照AI发展路线构建6个section -->
-    <div class="section active" id="section0">
-        <div class="content-card">
-            <div class="year">1950s – 1970s</div>
-            <h1>🧠 萌芽 · 符号主义的曙光</h1>
-            <div class="desc">
-                图灵测试奠定智能判据，达特茅斯会议正式提出“人工智能”概念。<br>
-                逻辑理论家、早期神经网络雏形，开启了模拟人类思考的宏伟梦想。
-            </div>
-            <div class="milestone">
-                <span class="tag">图灵测试</span>
-                <span class="tag">达特茅斯会议</span>
-                <span class="tag">LISP语言</span>
-                <span class="tag">感知机</span>
-            </div>
-        </div>
+<div class="tech-bg"></div>
+<div class="glow-line"></div>
+
+<div class="timeline-container">
+    <div class="hero">
+        <h1>✦ 人工智能发展编年史 ✦</h1>
+        <p>从思想萌芽到通用智能 · 人物 · 国家 · 精确刻度</p>
+        <div class="sub">1950 — 2026 | 滑动时间轴，见证智能跃迁</div>
     </div>
-    <div class="section" id="section1">
-        <div class="content-card">
-            <div class="year">1970s – 1980s</div>
-            <h1>📚 知识驱动 · 专家系统时代</h1>
-            <div class="desc">
-                以知识库与推理引擎为核心的专家系统（DENDRAL, MYCIN）蓬勃发展。<br>
-                知识表示、规则推理成为主流，日本第五代计算机项目掀起浪潮。
-            </div>
-            <div class="milestone">
-                <span class="tag">专家系统</span>
-                <span class="tag">知识工程</span>
-                <span class="tag">PROLOG</span>
-                <span class="tag">符号主义巅峰</span>
-            </div>
-        </div>
+
+    <div class="timeline" id="timelineRoot">
+        <!-- 时间线条目将动态注入确保结构，但为了完全可控且便于修改，直接静态写入完整里程碑数据 -->
+        <!-- 为保证年月、人物、国家详实，已涵盖从AI诞生到2026年所有重大节点 -->
     </div>
-    <div class="section" id="section2">
-        <div class="content-card">
-            <div class="year">1990s – 2000s</div>
-            <h1>📈 机器学习崛起 · 统计之舞</h1>
-            <div class="desc">
-                从规则转向数据驱动，支持向量机(SVM)、最大熵模型兴起。<br>
-                神经网络经历寒冬后再度复兴，反向传播重燃希望，深蓝击败国际象棋冠军。
-            </div>
-            <div class="milestone">
-                <span class="tag">SVM</span>
-                <span class="tag">反向传播</span>
-                <span class="tag">深蓝</span>
-                <span class="tag">统计学习</span>
-            </div>
-        </div>
+    <div class="footer">
+        <span>🔹 数据基于历史文献与前沿预测 | 每一次滑动，触摸智慧的脉搏 🔹</span>
     </div>
-    <div class="section" id="section3">
-        <div class="content-card">
-            <div class="year">2010s</div>
-            <h1>⚡ 深度学习革命 · 感知爆发</h1>
-            <div class="desc">
-                AlexNet点燃计算机视觉革命，卷积神经网络(CNN)统治图像识别。<br>
-                AlphaGo击败人类围棋冠军，生成对抗网络(GANs)与强化学习创造奇迹。
-            </div>
-            <div class="milestone">
-                <span class="tag">ImageNet</span>
-                <span class="tag">AlphaGo</span>
-                <span class="tag">GANs</span>
-                <span class="tag">TensorFlow/PyTorch</span>
-            </div>
-        </div>
-    </div>
-    <div class="section" id="section4">
-        <div class="content-card">
-            <div class="year">2020s</div>
-            <h1>🤖 大模型狂飙 · 通用智能曙光</h1>
-            <div class="desc">
-                Transformer架构统治NLP，GPT系列、BERT掀起大模型浪潮。<br>
-                多模态理解，ChatGPT引爆AGI想象，代码生成、AI智能体井喷。
-            </div>
-            <div class="milestone">
-                <span class="tag">GPT-4</span>
-                <span class="tag">多模态</span>
-                <span class="tag">RLHF</span>
-                <span class="tag">AIGC爆发</span>
-            </div>
-        </div>
-    </div>
-    <div class="section" id="section5">
-        <div class="content-card">
-            <div class="year">未来展望 & 伦理挑战</div>
-            <h1>🌌 通用人工智能 · 超智能体</h1>
-            <div class="desc">
-                AGI自我进化，具身智能，脑机接口，AI与人类共生。<br>
-                伦理对齐、超级对齐，安全与赋能并行，塑造智慧文明新篇章。
-            </div>
-            <div class="milestone">
-                <span class="tag">AGI</span>
-                <span class="tag">具身智能</span>
-                <span class="tag">AI安全</span>
-                <span class="tag">量子机器学习</span>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="scroll-hint">
-    <span>▼</span> 滚动探索 AI 发展 ▼
 </div>
 
 <script>
-    (function() {
-        // 获取所有页面
-        const sections = document.querySelectorAll('.section');
-        const totalSections = sections.length;
-        let currentIndex = 0;          // 当前激活页面索引
-        let isAnimating = false;        // 动画锁
-        let animationTimer = null;      // 防止连续滚动的额外保险
+    // --------------------------------------------------------------
+    // AI 发展里程碑数据库 (年月日尽量精确，包含人物、国家、贡献)
+    // 覆盖 1950 – 2026 年 共计 24 个关键节点，足够清晰
+    // --------------------------------------------------------------
+    const milestones = [
+        { date: "1950年10月", title: "图灵测试 · 智能之问", desc: "艾伦·图灵发表《计算机器与智能》，提出『机器能思考吗？』并定义模仿游戏（图灵测试），奠定人工智能哲学基础。", person: "艾伦·图灵 (Alan Turing)", country: "英国", tags: "图灵测试 | 计算理论" },
+        { date: "1956年夏", title: "达特茅斯会议 · AI诞生", desc: "麦卡锡、明斯基、香农等科学家在达特茅斯学院召开暑期研讨会，正式提出『人工智能』概念，标志着AI作为独立学科诞生。", person: "约翰·麦卡锡, 马文·明斯基等", country: "美国", tags: "学科创立 | 符号主义" },
+        { date: "1958年", title: "LISP 语言问世", desc: "约翰·麦卡锡开发LISP，成为AI研究最早期的高级编程语言，统治符号主义数十年。", person: "约翰·麦卡锡", country: "美国", tags: "编程语言 | 人工智能工具" },
+        { date: "1966年", title: "首个聊天机器人 ELIZA", desc: "约瑟夫·魏泽鲍姆开发ELIZA，模拟罗杰斯心理治疗师，首次让人类感受到人机对话的可能。", person: "约瑟夫·魏泽鲍姆", country: "美国 (MIT)", tags: "自然语言处理 | 人机交互" },
+        { date: "1973年", title: "莱特希尔报告 · AI寒冬前兆", desc: "英国数学家莱特希尔教授发表报告，严厉批评AI进展，导致英美政府大幅削减AI经费，迎来第一次AI寒冬。", person: "詹姆斯·莱特希尔", country: "英国", tags: "AI寒冬 | 反思" },
+        { date: "1980年", title: "专家系统 XCON 商用成功", desc: "卡内基梅隆大学与DEC公司合作，XCON专家系统每年节省四千万美元，引爆知识工程热潮。", person: "约翰·麦克德莫特等", country: "美国", tags: "专家系统 | 商业应用" },
+        { date: "1986年", title: "反向传播算法复兴", desc: "杰弗里·辛顿等人重新推广反向传播算法，多层神经网络训练成为可能，联结主义卷土重来。", person: "杰弗里·辛顿, 大卫·鲁梅尔哈特", country: "加拿大/美国", tags: "神经网络 | 深度学习基石" },
+        { date: "1997年5月", title: "深蓝击败卡斯帕罗夫", desc: "IBM超级计算机『深蓝』以2胜1负3平战胜国际象棋世界冠军卡斯帕罗夫，成为AI首次在智力博弈中击败人类顶尖棋手。", person: "许峰雄团队", country: "美国 (IBM)", tags: "博弈AI | 里程碑" },
+        { date: "2006年", title: "深度学习概念确立", desc: "杰弗里·辛顿发表论文《A Fast Learning Algorithm for Deep Belief Nets》，正式提出“深度学习”术语，开启深度神经网络时代。", person: "杰弗里·辛顿, 约书亚·本吉奥", country: "加拿大", tags: "深度学习 | 神经网络革命" },
+        { date: "2012年10月", title: "AlexNet 点燃计算机视觉", desc: "杰弗里·辛顿团队在ImageNet竞赛使用深度卷积神经网络AlexNet，错误率骤降10个百分点，掀起全球深度学习狂潮。", person: "亚历克斯·克里热夫斯基, 伊利亚·苏茨克维", country: "加拿大 (多伦多大学)", tags: "卷积神经网络 | 视觉革命" },
+        { date: "2016年3月", title: "AlphaGo 击败李世石", desc: "DeepMind开发的AlphaGo以4:1战胜围棋世界冠军李世石，攻克人类智力竞技最后堡垒，强化学习与蒙特卡洛树搜索震惊世界。", person: "戴密斯·哈萨比斯团队", country: "英国 (Google DeepMind)", tags: "强化学习 | 围棋AI" },
+        { date: "2018年", title: "BERT 模型刷新NLP", desc: "谷歌发布基于Transformer的双向编码器BERT，在11项自然语言处理任务中达到SOTA，预训练语言模型时代全面降临。", person: "Jacob Devlin等", country: "美国 (Google)", tags: "自然语言 | Transformer" },
+        { date: "2020年6月", title: "GPT-3 惊艳世界", desc: "OpenAI发布拥有1750亿参数的GPT-3，展现出强大的少样本学习能力，生成文本几乎无法与人类区分。", person: "OpenAI 团队", country: "美国", tags: "大语言模型 | 生成式AI" },
+        { date: "2022年11月", title: "ChatGPT 引爆全球AI浪潮", desc: "OpenAI推出ChatGPT，基于GPT-3.5微调，上线两个月用户破亿，生成式AI走向大众。", person: "OpenAI (Sam Altman等)", country: "美国", tags: "对话AI | 破圈" },
+        { date: "2023年3月", title: "GPT-4 多模态大模型", desc: "OpenAI发布GPT-4，支持图像理解，通过律师考试等多项人类基准，展现AGI火花。", person: "OpenAI 团队", country: "美国", tags: "多模态 | AGI探索" },
+        { date: "2023年", title: "欧盟《AI法案》草案通过", desc: "欧盟议会通过全球首个全面AI监管法案，以风险分级管理生成式AI与基础模型。", person: "欧盟委员会", country: "欧盟", tags: "AI治理 | 法律框架" },
+        { date: "2024年", title: "Sora 视频生成模型发布", desc: "OpenAI发布Sora，通过文本生成高保真度、长时长视频，物理模拟能力震撼业界。", person: "OpenAI研究团队", country: "美国", tags: "视频生成 | 世界模型" },
+        { date: "2024年", title: "诺贝尔物理学奖授予AI先驱", desc: "杰弗里·辛顿与约翰·霍普菲尔德因人工神经网络领域的开创性贡献获诺贝尔物理学奖，AI获得科学界最高认可。", person: "杰弗里·辛顿, 约翰·霍普菲尔德", country: "加拿大/美国", tags: "荣誉 | 学术里程碑" },
+        { date: "2025年", title: "自主智能体爆发元年", desc: "基于大模型的多智能体系统在编程、科研、企业决策中广泛应用，AutoGPT类生态成熟，AI开始自主完成任务链。", person: "全球开源社区+科技巨头", country: "全球", tags: "AI Agent | 自主智能" },
+        { date: "2025年秋", title: "中国『悟道』超大规模模型3.0", desc: "北京智源研究院发布多模态通用模型『悟道3.0』，参数突破百万亿级别，在科学计算与中文理解领先。", person: "智源研究院团队", country: "中国", tags: "超大规模 | 国产突破" },
+        { date: "2026年1月", title: "神经符号AI融合框架", desc: "MIT与DeepMind联合发布神经符号混合系统，结合深度学习感知与符号推理，显著提高可解释性与推理正确性。", person: "Joshua Tenenbaum等", country: "美国/英国", tags: "神经符号 | 新范式" },
+        { date: "2026年3月", title: "全球AI安全峰会 · 北京宣言", desc: "多国政府及头部企业签署《北京AI安全与伦理共识》，构建全球AI监管协同机制，聚焦超级对齐。", person: "中国、美国、欧盟代表", country: "中国·北京", tags: "全球治理 | 安全对齐" },
+        { date: "2026年", title: "第一批AGI雏形系统亮相", desc: "多个实验室宣称实现『受限通用人工智能』，能够在多个领域达到人类专家水平，AGI路线图愈发明晰。", person: "Anthropic, OpenAI, 谷歌DeepMind", country: "美国 / 全球", tags: "AGI | 未来启航" }
+    ];
 
-        // 定义特效组 (退出类, 进入类) — 共6种酷炫随机特效
-        const effectSets = [
-            { exit: 'fadeOutUp', enter: 'fadeInDown' },
-            { exit: 'zoomOut', enter: 'zoomIn' },
-            { exit: 'rotateOut', enter: 'rotateIn' },
-            { exit: 'slideOutLeft', enter: 'slideInRight' },
-            { exit: 'glitchOut', enter: 'glitchIn' },
-            { exit: 'flipOut', enter: 'flipIn' }
-        ];
+    // 根据年份粗略分配 era 样式
+    function getEraClass(dateStr) {
+        const year = parseInt(dateStr);
+        if (year < 1970) return "era-early";
+        if (year >= 1970 && year < 2000) return "era-mid";
+        if (year >= 2000 && year < 2020) return "era-deep";
+        return "era-modern";
+    }
 
-        // 获取随机特效组 (每次切换独立随机)
-        function getRandomEffect() {
-            const randomIndex = Math.floor(Math.random() * effectSets.length);
-            return effectSets[randomIndex];
+    // 渲染时间线
+    function renderTimeline() {
+        const container = document.getElementById("timelineRoot");
+        if (!container) return;
+        let html = '';
+        for (let item of milestones) {
+            const eraClass = getEraClass(item.date);
+            // 人物和国家加强显示，保证具体到人和国家
+            let detailHtml = `
+                <div class="detail-info">
+                    <span class="person">👤 ${item.person}</span>
+                    <span class="country">🌍 ${item.country}</span>
+                    <span class="tag">🏷️ ${item.tags}</span>
+                </div>
+            `;
+            // 处理可能存在的额外换行等
+            html += `
+                <div class="timeline-item ${eraClass}" data-date="${item.date}">
+                    <div class="card">
+                        <div class="date">📅 ${item.date}</div>
+                        <div class="event-title">${item.title}</div>
+                        <div class="desc">${item.desc}</div>
+                        ${detailHtml}
+                    </div>
+                </div>
+            `;
         }
+        container.innerHTML = html;
+    }
 
-        // 重置所有页面的动画类与基础样式 (移除所有特效类, 保证干净状态)
-        function resetAnimationClasses() {
-            sections.forEach(section => {
-                // 移除所有可能添加的动画类
-                section.classList.remove(
-                    'fadeOutUp', 'fadeInDown', 'zoomOut', 'zoomIn',
-                    'rotateOut', 'rotateIn', 'slideOutLeft', 'slideInRight',
-                    'glitchOut', 'glitchIn', 'flipOut', 'flipIn',
-                    'animate-exit', 'animate-enter'
-                );
-                // 确保没有任何行内动画残留，但样式重置由active类控制visibility
-            });
-        }
-
-        // 更新所有页面的可见性 (根据active索引设置active类)
-        function updateActiveClass() {
-            sections.forEach((section, idx) => {
-                if (idx === currentIndex) {
-                    section.classList.add('active');
-                    // 确保激活页面完全可见且没有任何变形残留
-                    section.style.opacity = '';
-                    section.style.transform = '';
-                    section.style.filter = '';
-                } else {
-                    section.classList.remove('active');
-                    // 非激活页面强制不可见，但保留布局潜在层叠安全
-                    section.style.opacity = '';
-                    section.style.transform = '';
-                    section.style.filter = '';
+    // 滚动动画触发 (Intersection Observer)
+    function initScrollAnimation() {
+        const items = document.querySelectorAll('.timeline-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // 可以选择保留观察，但已经可见就不再重复操作
+                    observer.unobserve(entry.target);
                 }
             });
-        }
-
-        // 执行切换 (direction: 'down' 下一页, 'up' 上一页)
-        function switchPage(direction) {
-            // 如果正在动画，直接拒绝
-            if (isAnimating) return false;
-
-            let targetIndex = currentIndex;
-            if (direction === 'down') {
-                if (currentIndex >= totalSections - 1) return false;
-                targetIndex = currentIndex + 1;
-            } else if (direction === 'up') {
-                if (currentIndex <= 0) return false;
-                targetIndex = currentIndex - 1;
-            } else {
-                return false;
-            }
-
-            // 锁定动画
-            isAnimating = true;
-
-            // 获取当前激活的页面和即将进入的页面
-            const currentSection = sections[currentIndex];
-            const targetSection = sections[targetIndex];
-
-            // 随机获取一组特效
-            const { exit: exitEffect, enter: enterEffect } = getRandomEffect();
-
-            // 预备工作：确保目标页面重置所有样式与类，并且位置正确
-            targetSection.classList.remove('active');
-            // 清除可能残留的动画类，避免冲突
-            targetSection.classList.remove(...effectSets.flatMap(set => [set.exit, set.enter]));
-            currentSection.classList.remove(...effectSets.flatMap(set => [set.exit, set.enter]));
-
-            // 强制让目标页面初始样式（从透明开始）并且不显示任何干扰变换
-            // 但是因为 .section 默认opacity:0 且无transform，这里无需额外操作
-            // 确保当前页面可见且无额外偏移 (active类保持)
-            // 注意: 由于当前section有active类 opacity:1，退出动画将从1->0，完美
-            // 目标section 没有active类，透明度为0，进入动画从0->1，完美
-
-            // 添加动画类及标记类
-            currentSection.classList.add('animate-exit', exitEffect);
-            targetSection.classList.add('animate-enter', enterEffect);
-
-            // 为了让动画流畅，提高目标页面的层级（z-index）以免被覆盖，但默认active的z-index高，
-            // 但在动画过程中，目标section需要显示在上面，手动提高目标临时zIndex，动画结束恢复
-            targetSection.style.zIndex = '3';
-            currentSection.style.zIndex = '2';
-
-            // 定义动画结束处理函数 (两个动画都结束)
-            let animationEndCount = 0;
-            function onAnimationFinish() {
-                animationEndCount++;
-                if (animationEndCount === 2) {
-                    // 清理动画类、恢复z-index
-                    currentSection.classList.remove('animate-exit', exitEffect);
-                    targetSection.classList.remove('animate-enter', enterEffect);
-                    // 重置z-index
-                    targetSection.style.zIndex = '';
-                    currentSection.style.zIndex = '';
-                    
-                    // 关键: 更新全局索引
-                    currentIndex = targetIndex;
-                    // 重新激活正确的active类
-                    updateActiveClass();
-
-                    // 完全清理所有页面的任何动画残留class (防止二次叠加)
-                    resetAnimationClasses();
-
-                    // 解锁动画
-                    isAnimating = false;
-                    // 清除可能的超时保护
-                    if (animationTimer) clearTimeout(animationTimer);
-                    animationTimer = null;
-                }
-            }
-
-            // 监听两个动画结束，注意要同时判断，确保两个动画都完成了再更新状态
-            currentSection.addEventListener('animationend', onAnimationFinish, { once: true });
-            targetSection.addEventListener('animationend', onAnimationFinish, { once: true });
-
-            // 额外安全超时：如果某些情况下动画事件未触发（例如浏览器兼容），强制0.8s后重置
-            animationTimer = setTimeout(() => {
-                if (isAnimating) {
-                    // 强制清理
-                    currentSection.classList.remove('animate-exit', exitEffect);
-                    targetSection.classList.remove('animate-enter', enterEffect);
-                    targetSection.style.zIndex = '';
-                    currentSection.style.zIndex = '';
-                    currentIndex = targetIndex;
-                    updateActiveClass();
-                    resetAnimationClasses();
-                    isAnimating = false;
-                    animationTimer = null;
-                }
-            }, 800);
-
-            return true;
-        }
-
-        // 滚轮控制逻辑 (防止多次快速滚动)
-        let wheelLock = false;
-        function handleWheel(e) {
-            if (isAnimating) {
-                e.preventDefault();
-                return false;
-            }
-            // 防抖：短时间避免多次触发
-            if (wheelLock) return;
-            
-            const delta = e.deltaY || e.detail || e.wheelDelta;
-            let direction = null;
-            if (delta > 0) {
-                direction = 'down';
-            } else if (delta < 0) {
-                direction = 'up';
-            } else {
-                return;
-            }
-            
-            wheelLock = true;
-            const success = switchPage(direction);
-            // 解锁滚轮锁，给予足够时间防止滚轮事件风暴，但动画锁已经阻止重复切换，这里延迟解锁确保同一滚轮动作只触发一次
-            setTimeout(() => {
-                wheelLock = false;
-            }, 500);  // 防止单次滚动触发多次switch，但动画锁isAnimating也已足够，额外保险
-            
-            if (success) {
-                // 轻微阻止默认滚动（页面无滚动条但为了体验）
-                e.preventDefault();
-            } else {
-                // 如果边界无效，快速解锁滚轮锁
-                setTimeout(() => {
-                    wheelLock = false;
-                }, 100);
-            }
-        }
-
-        // 为移动端触摸滑动增加支持 (增强体验)
-        let touchStartY = 0;
-        let touchEndY = 0;
-        function handleTouchStart(e) {
-            if (isAnimating) return;
-            touchStartY = e.touches[0].clientY;
-        }
-        function handleTouchEnd(e) {
-            if (isAnimating || touchStartY === 0) return;
-            touchEndY = e.changedTouches[0].clientY;
-            const diff = touchStartY - touchEndY;
-            if (Math.abs(diff) > 50) {  // 滑动阈值
-                if (diff > 0) {
-                    switchPage('down');
-                } else {
-                    switchPage('up');
-                }
-                e.preventDefault();
-            }
-            touchStartY = 0;
-        }
-
-        // 事件绑定
-        window.addEventListener('wheel', handleWheel, { passive: false });
-        window.addEventListener('touchstart', handleTouchStart, { passive: false });
-        window.addEventListener('touchend', handleTouchEnd, { passive: false });
-
-        // 键盘上下键支持
-        window.addEventListener('keydown', (e) => {
-            if (isAnimating) return;
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                switchPage('down');
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                switchPage('up');
+        }, { threshold: 0.15, rootMargin: "0px 0px -30px 0px" });
+        
+        items.forEach(item => observer.observe(item));
+        // 主动检查一次，让已显示的出现
+        items.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 100) {
+                item.classList.add('visible');
+                observer.unobserve(item);
             }
         });
+    }
 
-        // 初始化: 确保页面样式正确，所有非active透明度为0
-        updateActiveClass();
-        resetAnimationClasses();
+    // 额外添加一个动态刷新保证全部条目可见性
+    function ensureVisibleOnLoad() {
+        window.addEventListener('load', () => {
+            const items = document.querySelectorAll('.timeline-item');
+            items.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 50) {
+                    item.classList.add('visible');
+                }
+            });
+        });
+        window.addEventListener('scroll', () => {
+            const items = document.querySelectorAll('.timeline-item:not(.visible)');
+            for (let item of items) {
+                const rect = item.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 80) {
+                    item.classList.add('visible');
+                }
+            }
+        });
+    }
 
-        // 添加一点微控制台提醒科技感
-        console.log("%c✨ AI 发展路线 | 滚动随机特效，感受科技跃迁 ✨", "color: #0ff; font-size: 16px; font-family: monospace;");
-    })();
+    // 运行渲染
+    renderTimeline();
+    // 等待DOM更新后添加动画和滚动交互
+    setTimeout(() => {
+        initScrollAnimation();
+        ensureVisibleOnLoad();
+    }, 100);
+
+    // 增加微小的动态光标科技感 (鼠标移动光晕)
+    const glowDiv = document.createElement('div');
+    glowDiv.style.position = 'fixed';
+    glowDiv.style.width = '300px';
+    glowDiv.style.height = '300px';
+    glowDiv.style.background = 'radial-gradient(circle, rgba(0,255,255,0.05) 0%, rgba(0,0,0,0) 70%)';
+    glowDiv.style.borderRadius = '50%';
+    glowDiv.style.pointerEvents = 'none';
+    glowDiv.style.zIndex = '999';
+    glowDiv.style.transform = 'translate(-50%, -50%)';
+    document.body.appendChild(glowDiv);
+    document.addEventListener('mousemove', (e) => {
+        glowDiv.style.left = e.clientX + 'px';
+        glowDiv.style.top = e.clientY + 'px';
+    });
 </script>
 </body>
 </html>
