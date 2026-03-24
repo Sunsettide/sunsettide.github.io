@@ -1,1 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>AI发展路线 | 科技感滚动视界</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* 避免拖动干扰，不影响文字复制 */
+        }
 
+        body {
+            background: #000000;
+            font-family: 'Segoe UI', 'Poppins', 'Orbitron', 'Courier New', monospace;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            color: #fff;
+        }
+
+        /* 科技感粒子网格背景 (动态流光) */
+        .bg-tech {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 20% 30%, #0a0f1e, #000000);
+            overflow: hidden;
+        }
+
+        /* 数字网格线 */
+        .bg-tech::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        /* 动态扫描光晕 */
+        .bg-tech::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.02) 0%, transparent 70%);
+            animation: rotateGlow 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+
+        /* 全屏容器 */
+        .fullpage-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 所有页面绝对定位 + 平滑过渡准备 */
+        .section {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            opacity: 0;           /* 默认不可见，active才可见 */
+            visibility: visible;
+            will-change: transform, opacity;
+            z-index: 1;
+            backdrop-filter: blur(2px);
+            /* 保证文字阴影和科技感 */
+        }
+
+        /* 激活的页面完全显示 */
+        .section.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        /* 内容卡片样式 - 科技霓虹风 */
+        .content-card {
+            max-width: 800px;
+            width: 85%;
+            padding: 2.5rem 2rem;
+            background: rgba(10, 20, 30, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            border: 1px solid rgba(0, 255, 255, 0.35);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), inset 0 0 15px rgba(0, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: cardGlow 3s infinite alternate;
+        }
+
+        @keyframes cardGlow {
+            0% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.2), inset 0 0 5px rgba(0, 255, 255, 0.1); border-color: rgba(0, 255, 255, 0.3);}
+            100% { box-shadow: 0 0 35px rgba(0, 255, 255, 0.5), inset 0 0 15px rgba(0, 255, 255, 0.2); border-color: rgba(0, 255, 255, 0.8);}
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 45px rgba(0, 255, 255, 0.6);
+        }
+
+        .year {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            color: #0ff;
+            text-shadow: 0 0 8px #0ff;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            font-family: 'Orbitron', monospace;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(135deg, #fff, #0ff, #a0f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .desc {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #e0f0ff;
+            text-shadow: 0 0 2px rgba(0,0,0,0.5);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .milestone {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .tag {
+            background: rgba(0, 255, 255, 0.12);
+            border: 1px solid #0ff;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #0ff;
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+
+        .tag:hover {
+            background: #0ff;
+            color: #000;
+            box-shadow: 0 0 12px #0ff;
+            cursor: default;
+        }
+
+        /* 滚动提示小箭头 */
+        .scroll-hint {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            text-align: center;
+            color: #0ff;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+            pointer-events: none;
+            font-family: monospace;
+        }
+
+        .scroll-hint span {
+            display: block;
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.4;}
+            50% { transform: translateX(-50%) translateY(8px); opacity: 1;}
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .desc { font-size: 0.9rem; }
+            .content-card { padding: 1.5rem; width: 90%; }
+            .tag { font-size: 0.7rem; padding: 4px 12px; }
+        }
+
+        /* ---------- 随机特效动画定义 ---------- */
+        /* 所有动画统一时长 0.65s，缓动曲线科技感 */
+        .animate-exit, .animate-enter {
+            animation-duration: 0.65s;
+            animation-fill-mode: forwards;
+            animation-timing-function: cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        /* 特效组 1 - 淡入淡出+上移下移 */
+        @keyframes fadeOutUp {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-30px); filter: blur(4px);}
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(40px); filter: blur(6px);}
+            to { opacity: 1; transform: translateY(0); filter: blur(0);}
+        }
+
+        /* 特效组 2 - 缩放 + 旋转微光晕 */
+        @keyframes zoomOut {
+            from { opacity: 1; transform: scale(1); filter: brightness(1);}
+            to { opacity: 0; transform: scale(0.85); filter: brightness(0.6) blur(2px);}
+        }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(1.2); filter: blur(5px);}
+            to { opacity: 1; transform: scale(1); filter: blur(0);}
+        }
+
+        /* 特效组 3 - 3D旋转退出/进入 */
+        @keyframes rotateOut {
+            from { opacity: 1; transform: rotateX(0deg); }
+            to { opacity: 0; transform: rotateX(90deg); filter: blur(4px);}
+        }
+        @keyframes rotateIn {
+            from { opacity: 0; transform: rotateX(-90deg); filter: blur(6px);}
+            to { opacity: 1; transform: rotateX(0deg); filter: blur(0);}
+        }
+
+        /* 特效组 4 - 滑动滑入 左右酷炫 */
+        @keyframes slideOutLeft {
+            from { opacity: 1; transform: translateX(0);}
+            to { opacity: 0; transform: translateX(-100px); filter: blur(3px);}
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); filter: blur(5px);}
+            to { opacity: 1; transform: translateX(0); filter: blur(0);}
+        }
+
+        /* 特效组 5 - 倾斜光晕闪动 */
+        @keyframes glitchOut {
+            0% { opacity: 1; transform: skew(0deg); filter: brightness(1);}
+            20% { transform: skew(3deg); filter: hue-rotate(10deg);}
+            100% { opacity: 0; transform: skew(-5deg); filter: blur(6px) brightness(0.4);}
+        }
+        @keyframes glitchIn {
+            0% { opacity: 0; transform: skew(8deg); filter: blur(8px) hue-rotate(30deg);}
+            70% { transform: skew(-2deg);}
+            100% { opacity: 1; transform: skew(0deg); filter: blur(0) hue-rotate(0);}
+        }
+
+        /* 特效组 6 - 翻转 + 下落感 */
+        @keyframes flipOut {
+            0% { opacity: 1; transform: perspective(400px) rotateY(0deg);}
+            100% { opacity: 0; transform: perspective(400px) rotateY(90deg); filter: blur(2px);}
+        }
+        @keyframes flipIn {
+            0% { opacity: 0; transform: perspective(400px) rotateY(-90deg); filter: blur(5px);}
+            100% { opacity: 1; transform: perspective(400px) rotateY(0deg); filter: blur(0);}
+        }
+
+        /* 特效类映射 */
+        .fadeOutUp { animation-name: fadeOutUp; }
+        .fadeInDown { animation-name: fadeInDown; }
+        .zoomOut { animation-name: zoomOut; }
+        .zoomIn { animation-name: zoomIn; }
+        .rotateOut { animation-name: rotateOut; }
+        .rotateIn { animation-name: rotateIn; }
+        .slideOutLeft { animation-name: slideOutLeft; }
+        .slideInRight { animation-name: slideInRight; }
+        .glitchOut { animation-name: glitchOut; }
+        .glitchIn { animation-name: glitchIn; }
+        .flipOut { animation-name: flipOut; }
+        .flipIn { animation-name: flipIn; }
+
+        /* 辅助 */
+        .no-animation {
+            animation: none !important;
+        }
+    </style>
+</head>
+<body>
+<div class="bg-tech"></div>
+<div class="fullpage-container" id="fullpageContainer">
+    <!-- 按照AI发展路线构建6个section -->
+    <div class="section active" id="section0">
+        <div class="content-card">
+            <div class="year">1950s – 1970s</div>
+            <h1>🧠 萌芽 · 符号主义的曙光</h1>
+            <div class="desc">
+                图灵测试奠定智能判据，达特茅斯会议正式提出“人工智能”概念。<br>
+                逻辑理论家、早期神经网络雏形，开启了模拟人类思考的宏伟梦想。
+            </div>
+            <div class="milestone">
+                <span class="tag">图灵测试</span>
+                <span class="tag">达特茅斯会议</span>
+                <span class="tag">LISP语言</span>
+                <span class="tag">感知机</span>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section1">
+        <div class="content-card">
+            <div class="year">1970s – 1980s</div>
+            <h1>📚 知识驱动 · 专家系统时代</h1>
+            <div class="desc">
+                以知识库与推理引擎为核心的专家系统（DENDRAL, MYCIN）蓬勃发展。<br>
+                知识表示、规则推理成为主流，日本第五代计算机项目掀起浪潮。
+            </div>
+            <div class="milestone">
+                <span class="tag">专家系统</span>
+                <span class="tag">知识工程</span>
+                <span class="tag">PROLOG</span>
+                <span class="tag">符号主义巅峰</span>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section2">
+        <div class="content-card">
+            <div class="year">1990s – 2000s</div>
+            <h1>📈 机器学习崛起 · 统计之舞</h1>
+            <div class="desc">
+                从规则转向数据驱动，支持向量机(SVM)、最大熵模型兴起。<br>
+                神经网络经历寒冬后再度复兴，反向传播重燃希望，深蓝击败国际象棋冠军。
+            </div>
+            <div class="milestone">
+                <span class="tag">SVM</span>
+                <span class="tag">反向传播</span>
+                <span class="tag">深蓝</span>
+                <span class="tag">统计学习</span>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section3">
+        <div class="content-card">
+            <div class="year">2010s</div>
+            <h1>⚡ 深度学习革命 · 感知爆发</h1>
+            <div class="desc">
+                AlexNet点燃计算机视觉革命，卷积神经网络(CNN)统治图像识别。<br>
+                AlphaGo击败人类围棋冠军，生成对抗网络(GANs)与强化学习创造奇迹。
+            </div>
+            <div class="milestone">
+                <span class="tag">ImageNet</span>
+                <span class="tag">AlphaGo</span>
+                <span class="tag">GANs</span>
+                <span class="tag">TensorFlow/PyTorch</span>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section4">
+        <div class="content-card">
+            <div class="year">2020s</div>
+            <h1>🤖 大模型狂飙 · 通用智能曙光</h1>
+            <div class="desc">
+                Transformer架构统治NLP，GPT系列、BERT掀起大模型浪潮。<br>
+                多模态理解，ChatGPT引爆AGI想象，代码生成、AI智能体井喷。
+            </div>
+            <div class="milestone">
+                <span class="tag">GPT-4</span>
+                <span class="tag">多模态</span>
+                <span class="tag">RLHF</span>
+                <span class="tag">AIGC爆发</span>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section5">
+        <div class="content-card">
+            <div class="year">未来展望 & 伦理挑战</div>
+            <h1>🌌 通用人工智能 · 超智能体</h1>
+            <div class="desc">
+                AGI自我进化，具身智能，脑机接口，AI与人类共生。<br>
+                伦理对齐、超级对齐，安全与赋能并行，塑造智慧文明新篇章。
+            </div>
+            <div class="milestone">
+                <span class="tag">AGI</span>
+                <span class="tag">具身智能</span>
+                <span class="tag">AI安全</span>
+                <span class="tag">量子机器学习</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="scroll-hint">
+    <span>▼</span> 滚动探索 AI 发展 ▼
+</div>
+
+<script>
+    (function() {
+        // 获取所有页面
+        const sections = document.querySelectorAll('.section');
+        const totalSections = sections.length;
+        let currentIndex = 0;          // 当前激活页面索引
+        let isAnimating = false;        // 动画锁
+        let animationTimer = null;      // 防止连续滚动的额外保险
+
+        // 定义特效组 (退出类, 进入类) — 共6种酷炫随机特效
+        const effectSets = [
+            { exit: 'fadeOutUp', enter: 'fadeInDown' },
+            { exit: 'zoomOut', enter: 'zoomIn' },
+            { exit: 'rotateOut', enter: 'rotateIn' },
+            { exit: 'slideOutLeft', enter: 'slideInRight' },
+            { exit: 'glitchOut', enter: 'glitchIn' },
+            { exit: 'flipOut', enter: 'flipIn' }
+        ];
+
+        // 获取随机特效组 (每次切换独立随机)
+        function getRandomEffect() {
+            const randomIndex = Math.floor(Math.random() * effectSets.length);
+            return effectSets[randomIndex];
+        }
+
+        // 重置所有页面的动画类与基础样式 (移除所有特效类, 保证干净状态)
+        function resetAnimationClasses() {
+            sections.forEach(section => {
+                // 移除所有可能添加的动画类
+                section.classList.remove(
+                    'fadeOutUp', 'fadeInDown', 'zoomOut', 'zoomIn',
+                    'rotateOut', 'rotateIn', 'slideOutLeft', 'slideInRight',
+                    'glitchOut', 'glitchIn', 'flipOut', 'flipIn',
+                    'animate-exit', 'animate-enter'
+                );
+                // 确保没有任何行内动画残留，但样式重置由active类控制visibility
+            });
+        }
+
+        // 更新所有页面的可见性 (根据active索引设置active类)
+        function updateActiveClass() {
+            sections.forEach((section, idx) => {
+                if (idx === currentIndex) {
+                    section.classList.add('active');
+                    // 确保激活页面完全可见且没有任何变形残留
+                    section.style.opacity = '';
+                    section.style.transform = '';
+                    section.style.filter = '';
+                } else {
+                    section.classList.remove('active');
+                    // 非激活页面强制不可见，但保留布局潜在层叠安全
+                    section.style.opacity = '';
+                    section.style.transform = '';
+                    section.style.filter = '';
+                }
+            });
+        }
+
+        // 执行切换 (direction: 'down' 下一页, 'up' 上一页)
+        function switchPage(direction) {
+            // 如果正在动画，直接拒绝
+            if (isAnimating) return false;
+
+            let targetIndex = currentIndex;
+            if (direction === 'down') {
+                if (currentIndex >= totalSections - 1) return false;
+                targetIndex = currentIndex + 1;
+            } else if (direction === 'up') {
+                if (currentIndex <= 0) return false;
+                targetIndex = currentIndex - 1;
+            } else {
+                return false;
+            }
+
+            // 锁定动画
+            isAnimating = true;
+
+            // 获取当前激活的页面和即将进入的页面
+            const currentSection = sections[currentIndex];
+            const targetSection = sections[targetIndex];
+
+            // 随机获取一组特效
+            const { exit: exitEffect, enter: enterEffect } = getRandomEffect();
+
+            // 预备工作：确保目标页面重置所有样式与类，并且位置正确
+            targetSection.classList.remove('active');
+            // 清除可能残留的动画类，避免冲突
+            targetSection.classList.remove(...effectSets.flatMap(set => [set.exit, set.enter]));
+            currentSection.classList.remove(...effectSets.flatMap(set => [set.exit, set.enter]));
+
+            // 强制让目标页面初始样式（从透明开始）并且不显示任何干扰变换
+            // 但是因为 .section 默认opacity:0 且无transform，这里无需额外操作
+            // 确保当前页面可见且无额外偏移 (active类保持)
+            // 注意: 由于当前section有active类 opacity:1，退出动画将从1->0，完美
+            // 目标section 没有active类，透明度为0，进入动画从0->1，完美
+
+            // 添加动画类及标记类
+            currentSection.classList.add('animate-exit', exitEffect);
+            targetSection.classList.add('animate-enter', enterEffect);
+
+            // 为了让动画流畅，提高目标页面的层级（z-index）以免被覆盖，但默认active的z-index高，
+            // 但在动画过程中，目标section需要显示在上面，手动提高目标临时zIndex，动画结束恢复
+            targetSection.style.zIndex = '3';
+            currentSection.style.zIndex = '2';
+
+            // 定义动画结束处理函数 (两个动画都结束)
+            let animationEndCount = 0;
+            function onAnimationFinish() {
+                animationEndCount++;
+                if (animationEndCount === 2) {
+                    // 清理动画类、恢复z-index
+                    currentSection.classList.remove('animate-exit', exitEffect);
+                    targetSection.classList.remove('animate-enter', enterEffect);
+                    // 重置z-index
+                    targetSection.style.zIndex = '';
+                    currentSection.style.zIndex = '';
+                    
+                    // 关键: 更新全局索引
+                    currentIndex = targetIndex;
+                    // 重新激活正确的active类
+                    updateActiveClass();
+
+                    // 完全清理所有页面的任何动画残留class (防止二次叠加)
+                    resetAnimationClasses();
+
+                    // 解锁动画
+                    isAnimating = false;
+                    // 清除可能的超时保护
+                    if (animationTimer) clearTimeout(animationTimer);
+                    animationTimer = null;
+                }
+            }
+
+            // 监听两个动画结束，注意要同时判断，确保两个动画都完成了再更新状态
+            currentSection.addEventListener('animationend', onAnimationFinish, { once: true });
+            targetSection.addEventListener('animationend', onAnimationFinish, { once: true });
+
+            // 额外安全超时：如果某些情况下动画事件未触发（例如浏览器兼容），强制0.8s后重置
+            animationTimer = setTimeout(() => {
+                if (isAnimating) {
+                    // 强制清理
+                    currentSection.classList.remove('animate-exit', exitEffect);
+                    targetSection.classList.remove('animate-enter', enterEffect);
+                    targetSection.style.zIndex = '';
+                    currentSection.style.zIndex = '';
+                    currentIndex = targetIndex;
+                    updateActiveClass();
+                    resetAnimationClasses();
+                    isAnimating = false;
+                    animationTimer = null;
+                }
+            }, 800);
+
+            return true;
+        }
+
+        // 滚轮控制逻辑 (防止多次快速滚动)
+        let wheelLock = false;
+        function handleWheel(e) {
+            if (isAnimating) {
+                e.preventDefault();
+                return false;
+            }
+            // 防抖：短时间避免多次触发
+            if (wheelLock) return;
+            
+            const delta = e.deltaY || e.detail || e.wheelDelta;
+            let direction = null;
+            if (delta > 0) {
+                direction = 'down';
+            } else if (delta < 0) {
+                direction = 'up';
+            } else {
+                return;
+            }
+            
+            wheelLock = true;
+            const success = switchPage(direction);
+            // 解锁滚轮锁，给予足够时间防止滚轮事件风暴，但动画锁已经阻止重复切换，这里延迟解锁确保同一滚轮动作只触发一次
+            setTimeout(() => {
+                wheelLock = false;
+            }, 500);  // 防止单次滚动触发多次switch，但动画锁isAnimating也已足够，额外保险
+            
+            if (success) {
+                // 轻微阻止默认滚动（页面无滚动条但为了体验）
+                e.preventDefault();
+            } else {
+                // 如果边界无效，快速解锁滚轮锁
+                setTimeout(() => {
+                    wheelLock = false;
+                }, 100);
+            }
+        }
+
+        // 为移动端触摸滑动增加支持 (增强体验)
+        let touchStartY = 0;
+        let touchEndY = 0;
+        function handleTouchStart(e) {
+            if (isAnimating) return;
+            touchStartY = e.touches[0].clientY;
+        }
+        function handleTouchEnd(e) {
+            if (isAnimating || touchStartY === 0) return;
+            touchEndY = e.changedTouches[0].clientY;
+            const diff = touchStartY - touchEndY;
+            if (Math.abs(diff) > 50) {  // 滑动阈值
+                if (diff > 0) {
+                    switchPage('down');
+                } else {
+                    switchPage('up');
+                }
+                e.preventDefault();
+            }
+            touchStartY = 0;
+        }
+
+        // 事件绑定
+        window.addEventListener('wheel', handleWheel, { passive: false });
+        window.addEventListener('touchstart', handleTouchStart, { passive: false });
+        window.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+        // 键盘上下键支持
+        window.addEventListener('keydown', (e) => {
+            if (isAnimating) return;
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                switchPage('down');
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                switchPage('up');
+            }
+        });
+
+        // 初始化: 确保页面样式正确，所有非active透明度为0
+        updateActiveClass();
+        resetAnimationClasses();
+
+        // 添加一点微控制台提醒科技感
+        console.log("%c✨ AI 发展路线 | 滚动随机特效，感受科技跃迁 ✨", "color: #0ff; font-size: 16px; font-family: monospace;");
+    })();
+</script>
+</body>
+</html>
